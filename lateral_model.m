@@ -1,0 +1,33 @@
+function [A,B,C,D] = lateral_model(V)
+m = 1573;
+lz = 2873;
+lf = 1.1;
+lr = 1.58;
+Cf = 80000;
+Cr = 80000;
+Vx = V;
+l_psi = lz;
+a22 = -(2*Cf+2*Cr) / (m*Vx);
+a23 = 2*(Cf+Cr)/m;
+a24 = - (2*Cf*lf - 2*Cr*lr)/(m*Vx);
+a42 = - (2*lf*Cf-2*lf*Cr)/(l_psi*Vx);
+a43 = 2*(lf*Cf-lf*Cr)/l_psi;
+a44 = -(2*lf*lf*Cf + 2*lf*lf*Cr)/(l_psi*Vx);
+b21 = 2*Cf/m;
+b22 = -Vx -2*(lf*Cf-lr*Cr)/(m*Vx);
+b41 = 2*lf*Cf/l_psi;
+b42 = -2*(lf*lf*Cf+lr*lr*Cr)/(l_psi*Vx);
+A_lat = [0   1   0   0; 
+         0 a22 a23 a24;
+         0   0   0   1;
+         0 a42 a43 a44;];
+B1_lat = [0 b21 0 b41]';
+B2_lat = [0 b22 0 b42]';
+C_lat = eye(4);
+D1_lat = zeros(4,1);
+D2_lat = zeros(4,1);
+A= A_lat;
+B= [B1_lat B2_lat];
+C= C_lat;
+D= [D1_lat D2_lat];
+
